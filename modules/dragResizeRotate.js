@@ -26,7 +26,7 @@ class GetCoords
 
 /*
 Options:
-elems class // required
+elems class // required 
 callback // optional
 wrapper mark border color -> red  // optional
 wrapper drr border color -> yellow  // optional
@@ -226,45 +226,13 @@ class Drr
                 elem.style.top=top;
                 elem.style.left=left;
                 this.positionWrapper(elem,wrapper);
-                this.removeWrapperMark();
-                let v=new GetCoords(elem);                
-                this.callback(
-                    {
-                        elemId:elem.id,
-                        top:v.t.toFixed(2),
-                        left:v.l.toFixed(2),
-                        realTop:v.rt.toFixed(2),
-                        realLeft:v.rl.toFixed(2),
-                        width:v.w.toFixed(2),
-                        height:v.h.toFixed(2),
-                        realWidth:v.rw.toFixed(2),
-                        realHeight:v.rh.toFixed(2),
-                        angle:this.getAngleFromMatrix(v.trns).toFixed(2),
-                        matrix:v.trns,
-                        state:'ondrag'
-                    }
-                );
+                this.removeWrapperMark();                
+                this.sendData(elem,'ondrag');  
             }
             const stopMove=()=>{
               document.removeEventListener('mousemove',handleMove,true);
-              document.removeEventListener('mouseup',stopMove,true);
-              let v=new GetCoords(elem);                
-              this.callback(
-                  {
-                      elemId:elem.id,
-                      top:v.t.toFixed(2),
-                      left:v.l.toFixed(2),
-                      realTop:v.rt.toFixed(2),
-                      realLeft:v.rl.toFixed(2),
-                      width:v.w.toFixed(2),
-                      height:v.h.toFixed(2),
-                      realWidth:v.rw.toFixed(2),
-                      realHeight:v.rh.toFixed(2),
-                      angle:this.getAngleFromMatrix(v.trns).toFixed(2),
-                      matrix:v.trns,
-                      state:'dropped'
-                  }
-              );
+              document.removeEventListener('mouseup',stopMove,true);              
+              this.sendData(elem,'dropped');  
             }
             document.addEventListener('mousemove',handleMove,true);
             document.addEventListener('mouseup',stopMove,true);
@@ -342,46 +310,14 @@ class Drr
                 elem.style.left=left;               
                 this.positionWrapper(elem,wrapper);
                 this.positionBtns(wrapper);
-                this.removeWrapperMark();
-                let v=new GetCoords(elem);                
-                this.callback(
-                    {
-                        elemId:elem.id,
-                        top:v.t.toFixed(2),
-                        left:v.l.toFixed(2),
-                        realTop:v.rt.toFixed(2),
-                        realLeft:v.rl.toFixed(2),
-                        width:v.w.toFixed(2),
-                        height:v.h.toFixed(2),
-                        realWidth:v.rw.toFixed(2),
-                        realHeight:v.rh.toFixed(2),
-                        angle:this.getAngleFromMatrix(v.trns).toFixed(2),
-                        matrix:v.trns,
-                        state:'onresize'
-                    }
-                );
+                this.removeWrapperMark();                
+                this.sendData(elem,'onresize');  
             }
             const stopResize=()=>
             {
                 document.removeEventListener('mousemove',handleResize,true);
                 document.removeEventListener('mouseup',stopResize,true);
-                let v=new GetCoords(elem);                
-                this.callback(
-                    {
-                        elemId:elem.id,
-                        top:v.t.toFixed(2),
-                        left:v.l.toFixed(2),
-                        realTop:v.rt.toFixed(2),
-                        realLeft:v.rl.toFixed(2),
-                        width:v.w.toFixed(2),
-                        height:v.h.toFixed(2),
-                        realWidth:v.rw.toFixed(2),
-                        realHeight:v.rh.toFixed(2),
-                        angle:this.getAngleFromMatrix(v.trns).toFixed(2),
-                        matrix:v.trns,
-                        state:'resized'
-                    }
-                );
+                this.sendData(elem,'resized');                
             }            
             document.addEventListener('mousemove',handleResize,true);
             document.addEventListener('mouseup',stopResize,true);
@@ -411,45 +347,13 @@ class Drr
                 elem.style.transform='rotate('+newAngle+'deg)';
                 this.positionWrapper(elem,wrapper);
                 this.removeWrapperMark();
-                let v=new GetCoords(elem);                
-                this.callback(
-                    {
-                        elemId:elem.id,
-                        top:v.t.toFixed(2),
-                        left:v.l.toFixed(2),
-                        realTop:v.rt.toFixed(2),
-                        realLeft:v.rl.toFixed(2),
-                        width:v.w.toFixed(2),
-                        height:v.h.toFixed(2),
-                        realWidth:v.rw.toFixed(2),
-                        realHeight:v.rh.toFixed(2),
-                        angle:newAngle.toFixed(2),
-                        matrix:v.trns,
-                        state:'onrotate'
-                    }
-                );
+                this.sendData(elem,'onrotate');
             }
             const stopRotate=()=>
             {
                 document.removeEventListener('mousemove',handleRotate,true);
-                document.removeEventListener('mouseup',stopRotate,true);
-                let v=new GetCoords(elem);                
-                this.callback(
-                    {
-                        elemId:elem.id,
-                        top:v.t.toFixed(2),
-                        left:v.l.toFixed(2),
-                        realTop:v.rt.toFixed(2),
-                        realLeft:v.rl.toFixed(2),
-                        width:v.w.toFixed(2),
-                        height:v.h.toFixed(2),
-                        realWidth:v.rw.toFixed(2),
-                        realHeight:v.rh.toFixed(2),
-                        angle:this.getAngleFromMatrix(v.trns).toFixed(2),
-                        matrix:v.trns,
-                        state:'rotated'
-                    }
-                );
+                document.removeEventListener('mouseup',stopRotate,true);                
+                this.sendData(elem,'rotated');
             }            
             document.addEventListener('mousemove',handleRotate,true);
             document.addEventListener('mouseup',stopRotate,true);
@@ -465,10 +369,27 @@ class Drr
             let angle = 0;
             return angle;            
         }
-        sendData=(elem)=>
+        sendData=(elem,state)=>
         {            
-            let v=new GetCoords(elem);                
-            this.callback({elemId:elem.id,top:v.t,left:v.l,state:'ondrag'});
+            let v=new GetCoords(elem); 
+            let angle=this.getAngleFromMatrix(v.trns)
+            if(angle<0)angle+=360;               
+                this.callback(
+                    {
+                        elemId:elem.id,
+                        top:v.t.toFixed(2),
+                        left:v.l.toFixed(2),
+                        realTop:v.rt.toFixed(2),
+                        realLeft:v.rl.toFixed(2),
+                        width:v.w.toFixed(2),
+                        height:v.h.toFixed(2),
+                        realWidth:v.rw.toFixed(2),
+                        realHeight:v.rh.toFixed(2),
+                        angle:angle.toFixed(2),
+                        matrix:v.trns,
+                        state:state
+                    }
+                );
         }
 }
 export default Drr;

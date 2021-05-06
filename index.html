@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="module" src="./modules/index.js?v=12"></script>
+    <title>Drag resize and rotate</title>
+    <style>
+        body {margin: 0; background-color: darkgrey; overflow: hidden;}
+        #test-elem-one 
+        {
+            position: absolute; width:100px; border-radius: 0vw; height:100px; top:100px; left:100px; box-sizing: border-box;
+            background-color: rgb(68, 88, 126); transform: rotate(20deg);
+        }
+        #test-elem-two
+        {
+            position: absolute; width:30vw; height:15vw; top:20vw; left:30vw; box-sizing: border-box;
+            background-color: rgb(167, 129, 49); 
+        }
+        #values {position: fixed; bottom:2vw; right:2vw; padding: 2vw; background-color: rgba(0,0,0,0.6);}      
+        #values .show span {color:#fff; font-family:monospace; user-select: none;}
+        
+    </style>
+</head>
+<body id="main">
+    <div id="test-elem-one" class="drr"></div>    
+    <div id="test-elem-two" class="drr"></div>
+    <div id="values">
+        <div class="show"><span>Elem id :</span><span id="show-id"></span></div>
+        <div class="show"><span>Top :</span><span id="show-top"></span></div>
+        <div class="show"><span>Left :</span><span id="show-left"></span></div>
+        <div class="show"><span>Real top :</span><span id="show-real-top"></span></div>
+        <div class="show"><span>Real left :</span><span id="show-real-left"></span></div>
+        <div class="show"><span>Width :</span><span id="show-width"></span></div>
+        <div class="show"><span>Height :</span><span id="show-height"></span></div>
+        <div class="show"><span>Real width :</span><span id="show-real-width"></span></div>
+        <div class="show"><span>Real height :</span><span id="show-real-height"></span></div>
+        <div class="show"><span>Angle :</span><span id="show-angle"></span></div>
+        <div class="show"><span>Matrix :</span><span id="show-matrix">hidden</span></div>
+        <div class="show"><span>State :</span><span id="show-state"></span></div>
+    </div>
+</body>
+</html>
